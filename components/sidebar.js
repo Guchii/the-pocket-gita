@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 const Sidebar = () => {
     const router = useRouter()
     return (
-        <div className="flex flex-col justify-evenly gap-16 min-h-screen bg-red-50 p-10 shadow-2xl">
+        <div className="flex flex-col justify-evenly gap-16 h-screen sticky self-start bg-red-50 p-10 shadow-2xl">
             <h1 className="text-8xl font-black">Bhagwad Gita</h1>
             <p className="text-3xl">
                 Bhagavad Gita, also known as the Gita - &#34;The Song of
