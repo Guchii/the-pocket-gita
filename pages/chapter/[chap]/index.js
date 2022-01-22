@@ -1,23 +1,29 @@
 import { useRouter } from 'next/router'
-import verses from '../../../data/verses'
+import useFetch from '../../../util/useFetch'
 
 const Chapter = ({ className }) => {
     const router = useRouter()
-    const clickHandler = (verse) => {
-        router.push(`/chapter/${router.query.chap}/verse/${verse}`)
+    const { chap } = router.query
+    const [loading, verses, error] = useFetch(`chapters/${chap}/verses`)
+    if (loading) {
+        return <>Content Loading</>
     }
-    const chapVerses = verses.filter(
-        (verse) => verse.chapter_number == router.query.chap
-    )
+    if (error) {
+        return <>Damn an error occured</>
+    }
     return (
         <div className={className + ' grid grid-cols-2 grid-flow-row gap-10'}>
-            {chapVerses.map((verse) => {
+            {verses.map(({ verse_number, id, text }) => {
                 return (
                     <Card
-                        key={verse.id}
-                        verse={verse.verse_number}
-                        text={verse.text}
-                        clickHandler={clickHandler}
+                        key={id}
+                        verse={verse_number}
+                        text={text}
+                        clickHandler={() =>
+                            router.push(
+                                `/chapter/${chap}/verse/${verse_number}`
+                            )
+                        }
                     />
                 )
             })}

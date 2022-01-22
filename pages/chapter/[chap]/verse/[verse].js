@@ -1,14 +1,28 @@
 import { useRouter } from 'next/router'
-import verses from '../../../../data/verses'
+import useFetch from '../../../../util/useFetch'
 
 const Verse = ({ className }) => {
     const router = useRouter()
-    const findVerse = verses.filter(
-        (verse) =>
-            verse.chapter_number == router.query.chap &&
-            verse.verse_number == router.query.verse
-    )[0]
-    return <div className={className}>{findVerse}</div>
+    const { chap, verse } = router.query
+    const [loading, verses, error] = useFetch(
+        `chapters/${chap}/verses/${verse}`
+    )
+    if (loading) {
+        return <>Loading Content</>
+    } else if (error) {
+        return <>An error occured</>
+    }
+    return (
+        <div className={className + ' flex justify-center items-center'}>
+            {verses.map(({ text }) => {
+                return (
+                    <div key="1" className="text-5xl">
+                        {text}
+                    </div>
+                )
+            })}
+        </div>
+    )
 }
 
 export default Verse

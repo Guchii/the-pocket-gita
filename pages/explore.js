@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router'
-import chapters from '../data/chapters'
+import useFetch from '../util/useFetch'
 
 const Explore = ({ className }) => {
+    const [loading, chapters, error] = useFetch('chapters')
     const router = useRouter()
     const clickHandler = (chap) => {
         router.push(`/chapter/${chap}`)
+    }
+    if (loading) {
+        return <>loading content</>
     }
     return (
         <div className={className + ' grid grid-cols-2 grid-flow-row gap-10'}>
