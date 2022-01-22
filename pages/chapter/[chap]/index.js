@@ -1,14 +1,17 @@
 import { useRouter } from 'next/router'
-import verses from '../../data/verses'
+import verses from '../../../data/verses'
 
 const Chapter = ({ className }) => {
     const router = useRouter()
     const clickHandler = (verse) => {
         router.push(`/chapter/${router.query.chap}/verse/${verse}`)
     }
+    const chapVerses = verses.filter(
+        (verse) => verse.chapter_number == router.query.chap
+    )
     return (
         <div className={className + ' grid grid-cols-2 grid-flow-row gap-10'}>
-            {verses.map((verse) => {
+            {chapVerses.map((verse) => {
                 return (
                     <Card
                         key={verse.id}

@@ -9,7 +9,7 @@ const Modal = ({ children, modal, close }) => {
                 <div className="flex font-bold justify-between">
                     <h2 className="text-5xl">{modal.open}</h2>
                     <button
-                        className="bg-yellow-300 hover:bg-yellow-400 duration-200 w-16 rounded-xl text-black font-bold "
+                        className="bg-yellow-400 hover:bg-yellow-500 active:translate-y-1 duration-200 w-16 rounded-xl text-black font-bold "
                         onClick={close}
                     >
                         close
