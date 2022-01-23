@@ -13,7 +13,7 @@ jobs:
             - uses: actions/checkout@v2
             - name: Install and Build 🔧
               env:
-                  BASE_PATH: /the-pocket-times
+                  BASE_PATH: /the-pocket-gita
               run: |
                   npm ci
                   npm run build
