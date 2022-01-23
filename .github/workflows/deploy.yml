@@ -1,0 +1,24 @@
+name: CI
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install and Build 🔧
+              run: |
+                  yarn install --frozen-lockfile
+                  yarn export
+                  touch ./out/.nojekyll
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@4.1.7
+              with:
+                  branch: gh-pages
+                  folder: out
