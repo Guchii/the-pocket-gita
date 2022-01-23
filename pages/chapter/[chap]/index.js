@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Loading from '../../../components/loading'
 import useFetch from '../../../util/useFetch'
 import usePagination from '../../../util/usePagination'
 
@@ -7,12 +8,7 @@ const Chapter = ({ className }) => {
     const { chap } = router.query
     const [loading, verses, error] = useFetch(`chapters/${chap}/verses`)
     const [currentPosts, setCurrentPage] = usePagination(verses, 8)
-    if (loading) {
-        return <>Content Loading</>
-    }
-    if (error) {
-        return <>Damn an error occured</>
-    }
+    if (loading) return <Loading className={className} />
     return (
         <div className={className}>
             <div className={'grid grid-cols-2 grid-flow-row gap-10'}>

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router'
+import Loading from '../../../../components/loading'
 import useFetch from '../../../../util/useFetch'
 
 const Verse = ({ className }) => {
@@ -7,11 +8,7 @@ const Verse = ({ className }) => {
     const [loading, verses, error] = useFetch(
         `chapters/${chap}/verses/${verse}`
     )
-    if (loading) {
-        return <>Loading Content</>
-    } else if (error) {
-        return <>An error occured</>
-    }
+    if (loading) return <Loading className={className} />
     return (
         <div className={className + ' flex justify-center items-center'}>
             {verses.map(({ text }) => {

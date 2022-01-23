@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import { useState } from 'react/cjs/react.development'
+import Loading from '../components/loading'
 import useFetch from '../util/useFetch'
 import usePagination from '../util/usePagination'
 
@@ -9,7 +8,7 @@ const Explore = ({ className }) => {
     const [currentPosts, setCurrentPage] = usePagination(chapters, 8)
     const router = useRouter()
     const clickHandler = (chap) => router.push(`/chapter/${chap}`)
-    if (loading) return <>loading content</>
+    if (loading) return <Loading className={className} />
     return (
         <div className={className}>
             <div className="h-5/6 grid grid-cols-2 grid-flow-row gap-10">
