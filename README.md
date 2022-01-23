@@ -2,7 +2,7 @@
 
 Project will be completed soon
 
-Demo: https://gita-pi.vercel.app
+Demo: https://guchii.github.io/the-pocket-gita
 
 Backend data API is working and usable
 
