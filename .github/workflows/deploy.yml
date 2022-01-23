@@ -13,8 +13,8 @@ jobs:
             - uses: actions/checkout@v2
             - name: Install and Build 🔧
               run: |
-                  yarn install --frozen-lockfile
-                  yarn export
+                  npm ci
+                  npm run build
                   touch ./out/.nojekyll
 
             - name: Deploy 🚀
