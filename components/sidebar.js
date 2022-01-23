@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import useFetch from '../util/useFetch'
+import { motion } from 'framer-motion'
 
 const Sidebar = ({ openModal }) => {
     const router = useRouter()
@@ -7,11 +8,15 @@ const Sidebar = ({ openModal }) => {
     const [loading, chapter, error] = useFetch(`chapters/${chap}`)
     const isChapterPage = router.pathname === '/chapter/[chap]'
     return (
-        <div className="h-screen space-y-20 sticky self-start bg-red-50 p-10 shadow-2xl w-2/5">
-            <h1 className="text-8xl font-black h-1/4 ">
+        <motion.div
+            initial={{ opacity: 0, x: -1000 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="h-screen space-y-20 sticky self-start bg-red-50 p-10 shadow-2xl w-full text-center md:w-2/5 md:text-left"
+        >
+            <h1 className="head text-8xl font-black h-1/4 ">
                 The <br /> Pocket Gita
             </h1>
-            <p className="text-xl h-1/4  overflow-auto">
+            <p className="main text-xl h-1/4 overflow-auto">
                 {isChapterPage ? (
                     <>
                         {chapter.map((ch) => (
@@ -72,7 +77,7 @@ const Sidebar = ({ openModal }) => {
                     </li>
                 </ul>
             </div>
-        </div>
+        </motion.div>
     )
 }
 

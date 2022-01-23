@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router'
 import useFetch from '../../../util/useFetch'
+import usePagination from '../../../util/usePagination'
 
 const Chapter = ({ className }) => {
     const router = useRouter()
     const { chap } = router.query
     const [loading, verses, error] = useFetch(`chapters/${chap}/verses`)
+    const [currentPosts, setCurrentPage] = usePagination(verses, 8)
     if (loading) {
         return <>Content Loading</>
     }
@@ -12,21 +14,34 @@ const Chapter = ({ className }) => {
         return <>Damn an error occured</>
     }
     return (
-        <div className={className + ' grid grid-cols-2 grid-flow-row gap-10'}>
-            {verses.map(({ verse_number, id, text }) => {
-                return (
-                    <Card
-                        key={id}
-                        verse={verse_number}
-                        text={text}
-                        clickHandler={() =>
-                            router.push(
-                                `/chapter/${chap}/verse/${verse_number}`
-                            )
-                        }
-                    />
-                )
-            })}
+        <div className={className}>
+            <div className={'grid grid-cols-2 grid-flow-row gap-10'}>
+                {currentPosts.map(({ verse_number, id, text }) => {
+                    return (
+                        <Card
+                            key={id}
+                            verse={verse_number}
+                            text={text}
+                            clickHandler={() =>
+                                router.push(
+                                    `/chapter/${chap}/verse/${verse_number}`
+                                )
+                            }
+                        />
+                    )
+                })}
+            </div>
+            <div className="h-1/6 flex justify-between items-center">
+                <button
+                    className="font-bold"
+                    onClick={() => setCurrentPage(-1)}
+                >
+                    prev page
+                </button>
+                <button className="font-bold" onClick={() => setCurrentPage(1)}>
+                    next page
+                </button>
+            </div>
         </div>
     )
 }
