@@ -1,6 +1,6 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import useFetch from '../util/useFetch'
-import { motion } from 'framer-motion'
 
 const Sidebar = ({ openModal }) => {
     const router = useRouter()
@@ -8,15 +8,13 @@ const Sidebar = ({ openModal }) => {
     const [loading, chapter, error] = useFetch(`chapters/${chap}`)
     const isChapterPage = router.pathname === '/chapter/[chap]'
     return (
-        <motion.div
-            initial={{ opacity: 0, x: -1000 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="h-screen space-y-20 sticky self-start bg-red-50 p-10 shadow-2xl w-full text-center md:w-2/5 md:text-left"
-        >
-            <h1 className="head text-8xl font-black h-1/4 ">
-                The <br /> Pocket Gita
+        <div className="h-screen w-2/5 bg-red-50 flex flex-col justify-center gap-8 p-8">
+            <h1 className="text-7xl capitalize">
+                <Link href="/">
+                    <a>Pocket Gita</a>
+                </Link>
             </h1>
-            <p className="main text-xl h-1/4 overflow-auto">
+            <p className="text-lg text-justify">
                 {isChapterPage ? (
                     <>
                         {chapter.map((ch) => (
@@ -43,41 +41,30 @@ const Sidebar = ({ openModal }) => {
                     </>
                 )}
             </p>
-            <div className="bottom h-1/4 space-y-14">
-                <button
-                    onClick={() => router.push('/explore')}
-                    className="duration-200 bg-red-600 hover:bg-red-700 active:translate-y-1 text-white text-2xl w-1/2 p-4 font-bold rounded-xl"
+            <button
+                onClick={() => router.push('/explore')}
+                className="btn mb-auto"
+            >
+                Explore
+            </button>
+            <ul className="flex justify-between gap-2">
+                <li onClick={() => openModal('about')} className="nav-link">
+                    about
+                </li>
+                <li onClick={() => openModal('api')} className="nav-link">
+                    api
+                </li>
+                <li onClick={() => openModal('credits')} className="nav-link">
+                    credits
+                </li>
+                <li
+                    onClick={() => openModal('contribute')}
+                    className="nav-link"
                 >
-                    Explore
-                </button>
-                <ul className="flex justify-start w-full font-bold text-3xl space-x-6">
-                    <li
-                        onClick={() => openModal('about')}
-                        className="hover:underline underline-offset-1 cursor-pointer"
-                    >
-                        about
-                    </li>
-                    <li
-                        onClick={() => openModal('api')}
-                        className="hover:underline underline-offset-1 cursor-pointer"
-                    >
-                        api
-                    </li>
-                    <li
-                        onClick={() => openModal('credits')}
-                        className="hover:underline underline-offset-1 cursor-pointer"
-                    >
-                        credits
-                    </li>
-                    <li
-                        onClick={() => openModal('contribute')}
-                        className="hover:underline underline-offset-1 cursor-pointer"
-                    >
-                        contribute
-                    </li>
-                </ul>
-            </div>
-        </motion.div>
+                    contribute
+                </li>
+            </ul>
+        </div>
     )
 }
 
