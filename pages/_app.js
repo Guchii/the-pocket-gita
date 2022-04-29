@@ -8,15 +8,15 @@ function MyApp({ Component, pageProps }) {
     const [modal, setModal] = useState({ isOpen: false, open: 'about' })
     return (
         <Provider>
-            <main className="flex flex-col md:flex-row">
+            <div className="flex">
                 <Sidebar
                     openModal={(open) => setModal({ isOpen: true, open })}
                 />
                 <Component
-                    className="text-white shadow-inner p-10 h-screen overflow-auto md:w-3/5 w-full"
+                    className="text-white h-screen overflow-auto w-3/5 p-8"
                     {...pageProps}
                 />
-            </main>
+            </div>
             <Modal
                 modal={modal}
                 close={() => setModal({ ...modal, isOpen: false })}
