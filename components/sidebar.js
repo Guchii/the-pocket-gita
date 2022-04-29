@@ -8,7 +8,7 @@ const Sidebar = ({ openModal }) => {
     const [loading, chapter, error] = useFetch(`chapters/${chap}`)
     const isChapterPage = router.pathname === '/chapter/[chap]'
     return (
-        <div className="h-screen w-2/5 bg-red-50 flex flex-col justify-center gap-8 p-8">
+        <div className="h-screen w-2/5 bg-red-50 flex flex-col justify-center gap-8 p-8 shadow-2xl">
             <h1 className="text-7xl capitalize">
                 <Link href="/">
                     <a>Pocket Gita</a>
@@ -48,24 +48,18 @@ const Sidebar = ({ openModal }) => {
                 Explore
             </button>
             <ul className="flex justify-between gap-2">
-                <li onClick={() => openModal('about')} className="nav-link">
-                    about
-                </li>
-                <li onClick={() => openModal('api')} className="nav-link">
-                    api
-                </li>
-                <li onClick={() => openModal('credits')} className="nav-link">
-                    credits
-                </li>
-                <li
-                    onClick={() => openModal('contribute')}
-                    className="nav-link"
-                >
-                    contribute
-                </li>
+                {['about', 'api', 'credits', 'contribute'].map((to) => (
+                    <LinkItem to={to} key={to} openModal={openModal} />
+                ))}
             </ul>
         </div>
     )
 }
+
+const LinkItem = ({ to, openModal }) => (
+    <li onClick={() => openModal(to)} className="nav-link">
+        {to}
+    </li>
+)
 
 export default Sidebar
