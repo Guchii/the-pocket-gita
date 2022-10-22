@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const usePagination = <T>(
     arr: Array<T>,
@@ -14,15 +14,38 @@ const usePagination = <T>(
         forward: boolean
     }>({ back: false, forward: false })
 
-    const changePage = (pay: number) => {
-        setCurrentPage(currentPage + pay)
-    }
-
     const indexOfLastPost = currentPage * postsPerPage
     const indexOfFirstPost = indexOfLastPost - postsPerPage
     const currentPosts = arr.slice(indexOfFirstPost, indexOfLastPost)
 
-    return { currentPosts, navigation, changePage }
+    useEffect(() => {
+        if (currentPage == 1)
+            setNavigation({
+                back: false,
+                forward: true,
+            })
+        else
+            setNavigation({
+                back: true,
+                forward: true,
+            })
+        if (
+            arr.slice(postsPerPage * (currentPage + 1) - postsPerPage)
+                .length === 0
+        )
+            setNavigation({
+                ...navigation,
+                forward: false,
+            })
+    }, [currentPage, navigation, currentPosts, arr, postsPerPage])
+
+    return {
+        currentPosts,
+        navigation,
+        changePage: (pay: number) => {
+            setCurrentPage(currentPage + pay)
+        },
+    }
 }
 
 export default usePagination
