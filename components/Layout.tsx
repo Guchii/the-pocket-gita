@@ -3,6 +3,16 @@ import { useRouter } from 'next/router'
 import Chapter from 'pages/chapter/[chap]'
 import { FC, ReactNode, useEffect, useState } from 'react'
 
+function debounce(func: () => void, timeout = 600) {
+    let timer
+    return (...args) => {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            func.apply(this, args)
+        }, timeout)
+    }
+}
+
 const Layout: FC<{ children?: ReactNode }> = ({ children }) => {
     return (
         <div className="flex items-center text-red-50">
@@ -58,28 +68,30 @@ const Jumper: FC = () => {
                             max={18}
                             min={1}
                             placeholder="chapter"
-                            value={jump.chap}
                             onChange={(e) => {
-                                setJump({
-                                    ...jump,
-                                    chap: parseInt(e.target.value),
-                                })
+                                debounce(() => {
+                                    setJump({
+                                        ...jump,
+                                        chap: parseInt(e.target.value),
+                                    })
+                                })()
                             }}
                         />
                         <input
                             type="number"
                             name="verse"
                             id="verse"
-                            value={jump.verse}
                             className="w-full bg-transparent outline-none placeholder:text-red-50 chap"
                             max={150}
                             min={1}
                             placeholder="verse"
                             onChange={(e) => {
-                                setJump({
-                                    ...jump,
-                                    verse: parseInt(e.target.value),
-                                })
+                                debounce(() => {
+                                    setJump({
+                                        ...jump,
+                                        verse: parseInt(e.target.value),
+                                    })
+                                })()
                             }}
                         />
                     </>
@@ -98,7 +110,6 @@ const Jumper: FC = () => {
                         <button
                             className="w-full font-bold bg-transparent rounded-full outline-none placeholder:text-red-50 hover:bg-red-500"
                             onClick={() => {
-                                setJump({ chap: null, verse: null })
                                 setSubmit(false)
                             }}
                         >
@@ -107,7 +118,7 @@ const Jumper: FC = () => {
                     </>
                 )}
             </li>
-            <span className="px-2 text-xs">Jump to verse</span>
+            <span className="px-2 text-xs font-semibold">jump to a verse</span>
         </>
     )
 }

@@ -17,8 +17,6 @@ export const getStaticProps: GetStaticProps = (
             verse.verse_number == verse_number &&
             verse.chapter_number == chapter_number
     )
-    console.log(verseText)
-
     return {
         props: {
             text: verseText ? verseText : 'Not Found',

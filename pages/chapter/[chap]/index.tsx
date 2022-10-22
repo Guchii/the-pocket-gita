@@ -37,7 +37,10 @@ export const getStaticPaths: GetStaticPaths = (
 const Chapter = ({ className, chapVerses }) => {
     const router = useRouter()
     const { chap } = router.query
-    const {currentPosts, changePage} = usePagination<Verse>(chapVerses, 6)
+    const { currentPosts, changePage, navigation } = usePagination<Verse>(
+        chapVerses,
+        6
+    )
     return (
         <div className={className}>
             <div className={'grid grid-cols-2 grid-flow-row gap-10'}>
@@ -58,12 +61,19 @@ const Chapter = ({ className, chapVerses }) => {
             </div>
             <div className="flex items-center justify-between h-1/6">
                 <button
-                    className="font-bold"
+                    className={
+                        'font-bold' + ` ${!navigation.back && 'bg-black'}`
+                    }
                     onClick={() => changePage(-1)}
                 >
                     prev page
                 </button>
-                <button className="font-bold" onClick={() => changePage(1)}>
+                <button
+                    className={
+                        'font-bold' + ` ${!navigation.forward && 'bg-black'}`
+                    }
+                    onClick={() => changePage(1)}
+                >
                     next page
                 </button>
             </div>
