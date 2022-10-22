@@ -5,8 +5,6 @@ import {
     GetStaticPathsContext,
 } from 'next'
 import { useRouter } from 'next/router'
-import Loading from '../../../components/loading'
-import useFetch from '../../../util/useFetch'
 import usePagination from '../../../util/usePagination'
 import verses from '../../../gita/data/verse.json'
 
@@ -39,7 +37,7 @@ export const getStaticPaths: GetStaticPaths = (
 const Chapter = ({ className, chapVerses }) => {
     const router = useRouter()
     const { chap } = router.query
-    const [currentPosts, setCurrentPage] = usePagination(chapVerses, 8)
+    const {currentPosts, changePage} = usePagination<Verse>(chapVerses, 6)
     return (
         <div className={className}>
             <div className={'grid grid-cols-2 grid-flow-row gap-10'}>
@@ -61,11 +59,11 @@ const Chapter = ({ className, chapVerses }) => {
             <div className="flex items-center justify-between h-1/6">
                 <button
                     className="font-bold"
-                    onClick={() => setCurrentPage(-1)}
+                    onClick={() => changePage(-1)}
                 >
                     prev page
                 </button>
-                <button className="font-bold" onClick={() => setCurrentPage(1)}>
+                <button className="font-bold" onClick={() => changePage(1)}>
                     next page
                 </button>
             </div>
@@ -77,7 +75,7 @@ const Card = ({ verse, text, clickHandler }) => {
     return (
         <div
             onClick={() => clickHandler(verse)}
-            className="p-4 text-2xl font-bold text-black duration-200 bg-yellow-300 shadow-xl cursor-pointer active:translate-y-1 h-36 rounded-xl "
+            className="p-4 text-2xl font-bold text-black duration-200 bg-yellow-300 cursor-pointer hover:shadow-xl hover:translate-x-2 h-36 rounded-xl "
         >
             <span className="self-end text-xl">{text}</span>
         </div>
