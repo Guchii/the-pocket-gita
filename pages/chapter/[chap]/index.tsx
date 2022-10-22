@@ -1,14 +1,45 @@
+import {
+    GetStaticPropsContext,
+    GetStaticProps,
+    GetStaticPaths,
+    GetStaticPathsContext,
+} from 'next'
 import { useRouter } from 'next/router'
 import Loading from '../../../components/loading'
 import useFetch from '../../../util/useFetch'
 import usePagination from '../../../util/usePagination'
+import verses from '../../../gita/data/verse.json'
 
-const Chapter = ({ className }) => {
+export const getStaticProps: GetStaticProps = async (
+    context: GetStaticPropsContext
+) => {
+    const chapVerses = (verses as Array<any>).filter(
+        (verse) => verse.chapter_number == context.params.chap
+    )
+    return {
+        props: {
+            chapVerses,
+        },
+    }
+}
+
+export const getStaticPaths: GetStaticPaths = (
+    context: GetStaticPathsContext
+) => ({
+    fallback: false,
+    paths: Array(18)
+        .fill(0)
+        .map((_, i) => ({
+            params: {
+                chap: (i + 1).toString(),
+            },
+        })),
+})
+
+const Chapter = ({ className, chapVerses }) => {
     const router = useRouter()
     const { chap } = router.query
-    const [loading, verses, error] = useFetch(`chapters/${chap}/verses`)
-    const [currentPosts, setCurrentPage] = usePagination(verses, 8)
-    if (loading) return <Loading className={className} />
+    const [currentPosts, setCurrentPage] = usePagination(chapVerses, 8)
     return (
         <div className={className}>
             <div className={'grid grid-cols-2 grid-flow-row gap-10'}>
@@ -27,7 +58,7 @@ const Chapter = ({ className }) => {
                     )
                 })}
             </div>
-            <div className="h-1/6 flex justify-between items-center">
+            <div className="flex items-center justify-between h-1/6">
                 <button
                     className="font-bold"
                     onClick={() => setCurrentPage(-1)}
@@ -46,9 +77,9 @@ const Card = ({ verse, text, clickHandler }) => {
     return (
         <div
             onClick={() => clickHandler(verse)}
-            className="bg-yellow-300 duration-200 active:translate-y-1 text-black font-bold text-2xl h-36 rounded-xl shadow-xl p-4 cursor-pointer "
+            className="p-4 text-2xl font-bold text-black duration-200 bg-yellow-300 shadow-xl cursor-pointer active:translate-y-1 h-36 rounded-xl "
         >
-            <span className="text-xl self-end">{text}</span>
+            <span className="self-end text-xl">{text}</span>
         </div>
     )
 }

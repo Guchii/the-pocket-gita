@@ -1,17 +1,26 @@
+import { GetStaticProps, GetStaticPropsContext } from 'next'
 import { useRouter } from 'next/router'
 import Loading from '../components/loading'
 import useFetch from '../util/useFetch'
 import usePagination from '../util/usePagination'
+import chapters from '../gita/data/chapters.json'
 
-const Explore = ({ className }) => {
-    const [loading, chapters, error] = useFetch('chapters')
+export const getStaticProps: GetStaticProps = async (
+    context: GetStaticPropsContext
+) => {
+    return {
+        props: {
+            chapters,
+        },
+    }
+}
+
+const Explore = ({ className, chapters }) => {
     const [currentPosts, setCurrentPage] = usePagination(chapters, 8)
     const router = useRouter()
-    const clickHandler = (chap) => router.push(`/chapter/${chap}`)
-    if (loading) return <Loading className={className} />
     return (
         <div className={className}>
-            <div className="h-5/6 grid grid-cols-2 grid-flow-row gap-10">
+            <div className="grid grid-flow-row grid-cols-2 gap-10 h-5/6">
                 {currentPosts.map((chapter) => {
                     return (
                         <Card
@@ -19,12 +28,14 @@ const Explore = ({ className }) => {
                             chap={chapter.chapter_number}
                             name={chapter.name}
                             name_meaning={chapter.name_meaning}
-                            clickHandler={clickHandler}
+                            clickHandler={(chap) =>
+                                router.push(`/chapter/${chap}`)
+                            }
                         />
                     )
                 })}
             </div>
-            <div className="h-1/6 flex justify-between items-center">
+            <div className="flex items-center justify-between h-1/6">
                 <button
                     className="font-bold"
                     onClick={() => setCurrentPage(-1)}
@@ -45,10 +56,10 @@ const Card = ({ chap, name, name_meaning, clickHandler }) => {
             onClick={() => clickHandler(chap)}
             className="bg-yellow-300 duration-200 active:translate-y-1 text-black font-bold text-2xl h-36 rounded-xl shadow-xl p-4 cursor-pointer grid grid-cols-[100px_1fr]"
         >
-            <span className="self-center row-span-2 text-7xl w-full text-center">
+            <span className="self-center w-full row-span-2 text-center text-7xl">
                 {chap}
             </span>
-            <span className="text-xl self-end">{name}</span>
+            <span className="self-end text-xl">{name}</span>
             <span className="text-sm">{name_meaning}</span>
         </div>
     )

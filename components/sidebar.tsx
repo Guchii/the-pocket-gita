@@ -6,11 +6,10 @@ import useFetch from '../util/useFetch'
 const Sidebar = ({ openModal }) => {
     const router = useRouter()
     const { chap } = router.query
-    const [loading, chapter, error] = useFetch(`chapters/${chap}`)
     const isChapterPage = router.pathname === '/chapter/[chap]'
     return (
-        <div className="h-screen w-2/5 bg-red-50 flex flex-col justify-center gap-8 p-8 shadow-2xl">
-            <h1 className="text-7xl capitalize">
+        <div className="flex flex-col justify-center w-2/5 h-screen gap-8 p-8 shadow-2xl bg-red-50">
+            <h1 className="capitalize text-7xl">
                 <Link href="/">
                     <a>Pocket Gita</a>
                 </Link>
@@ -18,7 +17,7 @@ const Sidebar = ({ openModal }) => {
             <p className="text-lg text-justify">
                 {isChapterPage ? (
                     <>
-                        {chapter.map((ch) => (
+                        {[].map((ch) => (
                             <>{ch.chapter_summary}</>
                         ))}
                     </>
@@ -33,11 +32,11 @@ const Sidebar = ({ openModal }) => {
             </p>
             <button
                 onClick={() => router.push('/explore')}
-                className="btn mb-auto"
+                className="mb-auto btn"
             >
                 explore
             </button>
-            <div className="flex gap-2 items-center text-2xl">
+            <div className="flex items-center gap-2 text-2xl">
                 <label htmlFor="cars" className="">
                     choose your language
                 </label>

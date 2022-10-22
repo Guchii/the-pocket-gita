@@ -11,10 +11,12 @@ const Loading = ({ className }) => {
         <div
             className={`${className} flex flex-col w-full justify-center items-center text-center`}
         >
-            <DotLoader color="white" css={{ marginBottom: '80px' }} />
-            <p className="font-bold text-2xl">Fetching data from our API</p>
+            <DotLoader color="white" />
+            <p className="mt-16 text-2xl font-bold">
+                Fetching data from our API
+            </p>
             {delay && (
-                <p className="font-bold text-lg w-1/2 mt-10">
+                <p className="w-1/2 mt-10 text-lg font-bold">
                     Our server may be on a cold start, please be patient
                     it&apos;ll become responsive in no time
                 </p>
